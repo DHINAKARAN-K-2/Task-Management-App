@@ -1,31 +1,59 @@
-const TaskForm = ({ taskText, setTaskText, priority, setPriority, addTask }) => {
-  return (
-    <div className="flex flex-col sm:flex-row gap-3 mb-6">
-      <input
-        type="text"
-        placeholder="What do you need to do?"
-        value={taskText}
-        onChange={(e) => setTaskText(e.target.value)}
-        className="flex-1 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-white transition w-full"
-      />
+import React from 'react';
 
-      <select
-        value={priority}
-        onChange={(e) => setPriority(e.target.value)}
-        className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-white transition"
-      >
-        <option value="High">🔴 High</option>
-        <option value="Medium">🟠 Medium</option>
-        <option value="Low">🟢 Low</option>
-      </select>
+const TaskForm = ({ formData, handleChange, onSubmit, isEdit }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.title.trim()) {
+      alert('Title is required');
+      return;
+    }
+    onSubmit(formData);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto">
+      <div>
+        <label className="block mb-1">Title</label>
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded bg-white dark:bg-gray-800"
+        />
+      </div>
+
+      <div>
+        <label className="block mb-1">Description</label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded bg-white dark:bg-gray-800"
+        />
+      </div>
+
+      <div>
+        <label className="block mb-1">Priority</label>
+        <select
+          name="priority"
+          value={formData.priority}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded bg-white dark:bg-gray-800"
+        >
+          <option value="High">🔴High</option>
+          <option value="Medium">🟠Medium</option>
+          <option value="Low">🟢Low</option>
+        </select>
+      </div>
 
       <button
-        onClick={addTask}
-        className="cursor-pointer bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br text-white px-6 py-3 rounded-lg transition font-medium"
+        type="submit"
+        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
       >
-        Add
+        {isEdit ? 'Update Task' : 'Create Task'}
       </button>
-    </div>
+    </form>
   );
 };
 
